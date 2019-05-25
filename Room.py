@@ -1,3 +1,4 @@
+global_rooms = {}
 
 class Room:
     def __init__(self, location, exits, desc):
