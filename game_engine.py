@@ -31,7 +31,9 @@ while True:
     # print the description, exits, and ask for input
     word_split = curr_input.split()
     #splits the input into words for sorting so we can deal with each word one by one in order
-    if word_split[0] in go_commands: 
+    if len(curr_input) == 0:
+        print('you have to enter something buddy\n')
+    elif word_split[0] in go_commands: 
         curr_xy = curr_room.location
         new_x = curr_xy[0]
         new_y = curr_xy[1]
@@ -50,5 +52,24 @@ while True:
         new_xy = (new_x, new_y)
         curr_room = global_rooms[new_xy]
         #This updates the xy coordinates then uses those to change the room that  the player is in      
+    elif word_split[0] in [word for directions in dir_commands for word in directions]:
+        curr_xy = curr_room.location
+        new_x = curr_xy[0]
+        new_y = curr_xy[1]
+        #This sets up our current location and breaks it into x and y coordinates     
+        if word_split[0] in north_commands and 'n' in curr_room.exits: 
+            new_y += 1
+        elif word_split[0] in south_commands and 's' in curr_room.exits:
+            new_y -= 1
+        elif word_split[0] in east_commands and 'e' in curr_room.exits:
+            new_x += 1         
+        elif word_split[0] in west_commands and 'w' in curr_room.exits:
+            new_x -= 1           
+        elif word_split[0] in [word for directions in dir_commands for word in directions]:
+            print('There is no exit to the {}\n'.format(' '.join(word_split[0:])))
+            #list comprehension for if there is not an exit for the direction inputted
+        new_xy = (new_x, new_y)
+        curr_room = global_rooms[new_xy]
+        #This updates the xy coordinates then uses those to change the room that  the player is in 
     else:
         print('I don\'t understand please try again\n')
