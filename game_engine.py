@@ -31,17 +31,18 @@ def lock_resolve(room, direction):
         print("This exit is locked.\n")
         return 0
 
-def go_dir(direction, location):
+def go_dir(direction, room):
+    location = room.location
     x = location[0]
     y = location[1]
-    if direction in north_commands and curr_room.exits['n']:
-        y += lock_resolve(curr_room, 'n')
-    elif direction in south_commands and curr_room.exits['s']:
-        y -= lock_resolve(curr_room, 's')
-    elif direction in east_commands and curr_room.exits['e']:
-        x += lock_resolve(curr_room, 'e')
-    elif direction in west_commands and curr_room.exits['w']:
-        x -= lock_resolve(curr_room, 'w')
+    if direction in north_commands and room.exits['n']:
+        y += lock_resolve(room, 'n')
+    elif direction in south_commands and room.exits['s']:
+        y -= lock_resolve(room, 's')
+    elif direction in east_commands and room.exits['e']:
+        x += lock_resolve(room, 'e')
+    elif direction in west_commands and room.exits['w']:
+        x -= lock_resolve(room, 'w')
     #this determines what direction was chosen and if that exit exists it alters the x y coordinates of the player
     elif direction in dir_commands:
         print('================\nThere is no exit to the {}\n================\n'.format(' '.join(direction)))
@@ -65,10 +66,10 @@ while True:
     if len(curr_input) == 0:
         print('you have to enter something buddy\n')
     elif word_split[0] in go_commands:
-        curr_room = global_rooms[go_dir(direction=word_split[1], location=curr_room.location)]
+        curr_room = global_rooms[go_dir(direction=word_split[1], room=curr_room)]
         #This updates the xy coordinates then uses those to change the room that  the player is in
     elif word_split[0] in dir_commands:
-        curr_room = global_rooms[go_dir(direction=word_split[0], location=curr_room.location)]
+        curr_room = global_rooms[go_dir(direction=word_split[0], room=curr_room)]
         #This updates the xy coordinates then uses those to change the room that  the player is in
     else:
         print('I don\'t understand please try again\n')
