@@ -3,12 +3,12 @@ import room_class
 global_rooms = room_class.global_rooms
 
 #make a dictionary for global rooms that will contain every room as they are instanciated
-room1 = room_class.Room((0,0), ['n', 'w'], 'The starting room')
-room2 = room_class.Room((0,1), ['s', 'w'], 'A bathroom')
-room3 = room_class.Room((-1,1), [ 'n', 's', 'e', 'w'], 'A room full of weapons')
-room4 = room_class.Room((-1,2), ['s'], 'An office')
-room5 = room_class.Room((-2,1), ['e'], 'A storage closet')
-room6 = room_class.Room((-1,0), ['n', 'e'], 'A room with metal walls and floor')
+room1 = room_class.Room((0,0), {'n': 'locked', 'w':''}, 'The starting room')
+room2 = room_class.Room((0,1), {'s':'', 'w':''}, 'A bathroom')
+room3 = room_class.Room((-1,1), {'n':'', 's':'', 'e':'', 'w':''}, 'A room full of weapons')
+room4 = room_class.Room((-1,2), {'s':''}, 'An office')
+room5 = room_class.Room((-2,1), {'e':''}, 'A storage closet')
+room6 = room_class.Room((-1,0), {'n':'', 'e':''}, 'A room with metal walls and floor')
 #create rooms with locations in tuple format, exits as either n, s, e, or w, and a description of the room
 curr_room = global_rooms[(0,0)]
 #set starting room
@@ -38,17 +38,18 @@ while True:
         new_x = curr_xy[0]
         new_y = curr_xy[1]
         #This sets up our current location and breaks it into x and y coordinates
-        if word_split[1] in north_commands and 'n' in curr_room.exits: 
+        if word_split[1] in north_commands and 'n' in curr_room.exits and curr_room.lock_status('n') == 'unlocked': 
             new_y += 1
-        elif word_split[1] in south_commands and 's' in curr_room.exits:
+        elif word_split[1] in south_commands and 's' in curr_room.exits and curr_room.lock_status('s') == 'unlocked':
             new_y -= 1
-        elif word_split[1] in east_commands and 'e' in curr_room.exits:
+        elif word_split[1] in east_commands and 'e' in curr_room.exits and curr_room.lock_status('e') == 'unlocked':
             new_x += 1         
-        elif word_split[1] in west_commands and 'w' in curr_room.exits:
+        elif word_split[1] in west_commands and 'w' in curr_room.exits and curr_room.lock_status('w') == 'unlocked':
             new_x -= 1           
-        elif word_split[1] in [word for directions in dir_commands for word in directions]:
-            print('There is no exit to the {}\n'.format(' '.join(word_split[1:])))
         #this determines what direction was chosen and if that exit exists it alters the x y coordinates of the player
+        elif word_split[1] in [word for directions in dir_commands for word in directions]:
+            print('================\nThere is no exit to the {}\n================\n'.format(' '.join(word_split[1:])))
+        #list comprehension for if there is not an exit for the direction inputted equal signs are to make it easier to see for the user
         new_xy = (new_x, new_y)
         curr_room = global_rooms[new_xy]
         #This updates the xy coordinates then uses those to change the room that  the player is in      
@@ -66,8 +67,8 @@ while True:
         elif word_split[0] in west_commands and 'w' in curr_room.exits:
             new_x -= 1           
         elif word_split[0] in [word for directions in dir_commands for word in directions]:
-            print('There is no exit to the {}\n'.format(' '.join(word_split[0:])))
-            #list comprehension for if there is not an exit for the direction inputted
+            print('================\nThere is no exit to the {}\n================\n'.format(' '.join(word_split[0:])))
+            #list comprehension for if there is not an exit for the direction inputted equal signs are to make it easier to see for the user
         new_xy = (new_x, new_y)
         curr_room = global_rooms[new_xy]
         #This updates the xy coordinates then uses those to change the room that  the player is in 
