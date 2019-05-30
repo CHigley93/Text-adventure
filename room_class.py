@@ -1,6 +1,6 @@
 global_rooms = {}
 class Room:
-    def __init__(self, location, exits, desc, items=None):
+    def __init__(self, location, exits, desc, items=[]):
         self.exits = exits
         self.description = desc
         self.location = location
