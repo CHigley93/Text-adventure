@@ -97,7 +97,7 @@ while True:
           get(item)
           item_got = True
       if item_got == False:
-        ouput('{} is not in this room'.format(' '.join(word_split[1:])))
+        output('{} is not in this room'.format(' '.join(word_split[1:])))
     #check first word for an inventory command then prints the contents of the player's inventory
     elif word_split[0] in inv_commands:
       if len(hero.inventory) == 0:
